@@ -1,0 +1,98 @@
+from datetime import datetime, timedelta
+# Get current date and time
+
+
+# Get the current UTC time in ISO 8601 format
+current_utc_time_iso = datetime.utcnow().isoformat() + 'Z'  # Append 'Z' to indicate UTC
+print("Current UTC time in ISO 8601 format:", current_utc_time_iso)
+
+
+# Get today's date
+#today = now.date()
+#print("Today's date:", today)
+
+# Get the day of the week
+now = datetime.now()
+day_of_week = now.strftime("%A")
+print("Today is:", day_of_week)
+
+
+print("Welcome to Delivery Service")
+
+
+global cartValue
+cartValue = int(input("Input cart value")) # in cents
+distance = int (input("Enter the distance to deliver in meter"))
+quantity = int(input("Enter the number of items"))
+#time = input("Enter the time of delivery")
+
+def distanceFee(distance):
+    deliveryFee = 0
+    if distance <= 1000 :
+        deliveryFee = 200 #cents
+    else:
+        if (distance - 1000 ) % 500 == 0 :
+            deliveryFee = 200 +  (100 * ((distance - 1000 ) // 500 ))
+        else:
+            #additional_distance = distance - 1000
+            deliveryFee = 300 + (100 * ((distance-1000) // 500))  # 1 euro for every 500 meters
+
+
+
+    print("distance Fee",deliveryFee)
+    return deliveryFee
+
+
+
+def numberOfItem(quantity):
+    deliveryFee = 0
+    while cartValue != 20000:
+        surcharge = 10000 - cartValue
+
+        if quantity < 5 :
+            deliveryFee = surcharge
+        elif (quantity > 4) and (quantity <12 ) :
+            deliveryFee = (surcharge + (50 * (quantity - 4)) ) + 120
+
+        if deliveryFee <= 1500:
+            return deliveryFee
+        else:
+            deliveryFee = 1500
+
+    else:
+        deliveryFee = 0
+    return deliveryFee
+    print("number of item Fee",deliveryFee)
+
+def deliveryFeeTime(current_utc_time_iso, day_of_week):
+    #if (current_utc_time_iso >= 15.00) and (current_utc_time_iso <= 19.00) :
+    if day_of_week == "Friday" :
+      if deliveryFee < 1500 :
+        totalFee = deliveryFee * 1.2
+      else:
+        totalFee = 1500
+      print("TimeFee",deliveryFee)
+def delivery_main():
+    delivery_fee = distanceFee(distance) + numberOfItem(quantity)
+    total_fee = deliveryFeeTime(current_utc_time_iso, day_of_week)
+
+    print("total_fee:", total_fee)
+    print("delivery_fee:", delivery_fee)
+
+if __name__ == "__main__":
+    delivery_main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
